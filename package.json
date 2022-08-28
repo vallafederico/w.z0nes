@@ -1,0 +1,25 @@
+{
+  "name": "federico-22",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "dependencies": {
+    "gsap": "npm:@gsap/shockingly@^3.11.0",
+    "normalize-wheel": "^1.0.1",
+    "ogl": "^0.0.97",
+    "prefix": "^1.0.0",
+    "tiny-emitter": "^2.1.0"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=dev node esbuild.config.js",
+    "build": "NODE_ENV=production node esbuild.config.js",
+    "flow": "NODE_ENV=flow node esbuild.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.14.49",
+    "esbuild-plugin-glsl": "^1.1.0"
+  }
+}
