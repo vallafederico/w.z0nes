@@ -1,24 +1,31 @@
-import regeneratorRuntime from "regenerator-runtime/runtime";
-
 import { Transform } from "ogl";
-import { loadTexture, loadGeometry } from "./util/load.js";
-// import { LIB } from "../assets/lib.js";
-
-import Quad from "./_quad.js";
+import Grid from "./grid";
+import Quad from "./_/_quad.js";
 
 export default class extends Transform {
-  constructor(gl, data = {}) {
+  constructor(gl, { data, loaded, info }) {
     super();
     this.gl = gl;
-    this.isOn = true;
+    this.data = data;
+    this.loaded = loaded;
+    this.info = info;
+
+    // console.log("GL: scene", this.loaded, this.data);
 
     this.create();
   }
 
   create() {
-    /* Basic Quad */
-    this.quad = new Quad(this.gl);
-    this.quad.setParent(this);
+    /** -- Grid Creation */
+    this.grid = new Grid(this.gl, {
+      data: this.data,
+      loaded: this.loaded,
+      info: this.info,
+    });
+
+    this.grid.setParent(this);
+
+    this.isOn = true;
   }
 
   render(t) {

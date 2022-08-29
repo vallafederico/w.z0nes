@@ -1,5 +1,5 @@
 import { Plane, Mesh } from "ogl";
-import Material from "./mat/_quad";
+import Material from "../mat/_quad";
 
 export default class extends Mesh {
   constructor(gl, diff = null) {

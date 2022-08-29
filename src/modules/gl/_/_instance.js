@@ -1,5 +1,5 @@
 import { Plane, Geometry, Mesh } from "ogl";
-import Material from "./mat/_insta";
+import Material from "../mat/_insta";
 
 export default class extends Mesh {
   constructor(gl, geomData) {

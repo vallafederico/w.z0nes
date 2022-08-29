@@ -1,7 +1,7 @@
 import { Plane, Mesh } from "ogl";
-import Material from "./mat/_quad";
+import Material from "../mat/_quad";
 
-import { domSize } from "./util/domitem.js";
+import { domSize } from "../util/domitem.js";
 
 export default class extends Mesh {
   constructor(gl, el = null, vp = {}) {

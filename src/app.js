@@ -8,14 +8,15 @@ class App {
   }
 
   async load() {
-    this.loader = new Loader();
-    const data = await this.loader.load();
+    this.gl = new Gl();
+    this.loader = new Loader(this.gl.gl);
+    const loaded = await this.loader.load();
 
-    this.init();
+    this.init(loaded);
   }
 
-  init() {
-    this.gl = new Gl();
+  init(loaded) {
+    this.gl.init(loaded);
   }
 
   /* --- Loop */

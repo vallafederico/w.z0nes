@@ -6,6 +6,9 @@ export default class extends Camera {
 
     this.gl = gl;
     this.fov = fov;
+
+    // console.log(this);
+    this.far = 500;
   }
 
   get fovInRad() {

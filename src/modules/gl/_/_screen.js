@@ -1,5 +1,5 @@
 import { Triangle, Mesh } from "ogl";
-import Material from "./mat/_screen";
+import Material from "../mat/_screen";
 
 export default class extends Mesh {
   constructor(gl) {

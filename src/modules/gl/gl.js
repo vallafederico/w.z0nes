@@ -11,20 +11,23 @@ export default class {
 
     this.renderer = new Renderer({ dpr: 2 });
     this.gl = this.renderer.gl;
-    this.gl.clearColor(0, 0, 0, 1);
+    this.gl.clearColor(0.94, 0.94, 0.94, 1);
 
     this.wrapper.appendChild(this.gl.canvas);
 
     this.camera = new Cam(this.gl, {});
-    this.camera.position.set(0, 0, 5);
-
-    // this.camera.lookAt([0, 0, 0]);
-    // this.controls = new Orbit(this.camera);
-
-    this.scene = new Scene(this.gl);
-    this.time = 0;
+    this.camera.position.set(0, 0, 250);
 
     this.resize();
+
+    // this.camera.lookAt([0, 0, 0]);
+    this.controls = new Orbit(this.camera);
+  }
+
+  init(loaded) {
+    this.scene = new Scene(this.gl, loaded);
+    this.time = 0;
+
     this.initEvents();
 
     this.render();
@@ -70,7 +73,7 @@ export default class {
       aspect: this.vp.ratio,
     });
 
-    this.scene.resize(this.vp);
+    this.scene?.resize(this.vp);
     // this.resizeChild();
   }
 }

@@ -13,6 +13,8 @@ const FILES = {
 const SETTINGS = {
   bundle: true,
   sourcemap: !production,
+  loader: { ".png": "dataurl" },
+  loader: { ".webp": "dataurl" },
 };
 
 /* -- Plugins */
@@ -54,7 +56,10 @@ function serveFile() {
       plugins: PLUGINS,
     }
   ).then((server) => {
-    console.log(`↑FLOW`);
+    console.log(`↑ FLOW`);
+    console.log(" ");
+    console.log("https://webflow.com/design/z0nes");
+    console.log("https://codesandbox.io/s/z0nes-relay-2bv8mz");
     //   server.stop();
   });
 }

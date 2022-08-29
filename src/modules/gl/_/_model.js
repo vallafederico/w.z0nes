@@ -1,6 +1,5 @@
-import regeneratorRuntime from "regenerator-runtime/runtime";
 import { Plane, Mesh } from "ogl";
-import Material from "./mat/_model";
+import Material from "../mat/_model";
 
 export default class extends Mesh {
   constructor(gl, geometry = null) {
