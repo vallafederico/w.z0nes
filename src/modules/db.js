@@ -1,48 +1,48 @@
 export default class {
   constructor() {
-    this.data = [];
+    // this.data = [];
     this.info = {};
     this.init();
   }
 
   init() {
-    // # DEFINE
-    const params = {
-      itemsCount: 10000,
+    this.config = {
+      grid: {
+        num: 10000,
+        inNum: 0,
+      },
     };
 
-    // create empty
-    for (let i = 0; i < params.itemsCount; i++) {
-      this.data.push(null);
-    }
+    let last;
+    this.config.zones = [];
+    [...document.querySelectorAll('[data-project="meta"]')].forEach(
+      (item, i) => {
+        const content = JSON.parse(item.textContent);
 
-    // insert items
-    const items = document.querySelectorAll('[data-project="meta"]');
-    // (...) !!! IMPORTANT - compute same items with multiple instances ...
+        // instances
+        if (last === content.id) {
+          this.config.zones[this.config.zones.length - 1].in.push(
+            content.in[0]
+          );
+        } else {
+          last = content.id;
+          // console.log(last);
 
-    const computeInfo = [...items].map((item) => {
-      const content = JSON.parse(item.textContent);
+          // compute content
+          if (content.state === "FULL") {
+            content.state = 1;
+          } else if (content.state === "WIP") {
+            content.state = 0;
+            content.in = []; // delete INSTANCES if WIP
+          }
+          this.config.zones.push(content);
+        }
 
-      if (content.state === "FULL") {
-        content.state = 1;
-      } else if (content.state === "WIP") {
-        content.state = 0;
+        // get total INSTANCES number
+        this.config.grid.inNum += content.in.length;
       }
+    );
 
-      return content;
-    });
-
-    this.info = {
-      total: items.length,
-      items: computeInfo,
-    };
-
-    for (const item of items) {
-      const data = JSON.parse(item.textContent);
-      this.data.splice(data.id, 1, data);
-    }
-
-    // # check!
-    // console.log(this.data, this.data.length);
+    // console.log(array, ITEMS);
   }
 }

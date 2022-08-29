@@ -1,16 +1,15 @@
 import { Geometry, Mesh } from "ogl";
-import Program from "./mat/grid_points";
+import Program from "./mat/grid_is";
 
 export default class extends Mesh {
-  constructor(gl, { points }) {
+  constructor(gl, { points, planes, instances }) {
     super(gl);
     this.gl = gl;
 
-    // console.log(points);
-
     this.mode = this.gl.POINTS;
     this.geometry = new Geometry(this.gl, {
-      position: { size: 2, data: points.array },
+      position: { size: 2, data: instances.array },
+      a_rand: { size: 1, data: instances.rand },
     });
 
     this.program = new Program(this.gl, {});

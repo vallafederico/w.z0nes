@@ -3,12 +3,12 @@ import Grid from "./grid";
 import Quad from "./_/_quad.js";
 
 export default class extends Transform {
-  constructor(gl, { data, loaded, info }) {
+  constructor(gl, { loaded, config }) {
     super();
     this.gl = gl;
-    this.data = data;
+    // this.data = data;
     this.loaded = loaded;
-    this.info = info;
+    this.config = config;
 
     // console.log("GL: scene", this.loaded, this.data);
 
@@ -20,7 +20,7 @@ export default class extends Transform {
     this.grid = new Grid(this.gl, {
       data: this.data,
       loaded: this.loaded,
-      info: this.info,
+      config: this.config,
     });
 
     this.grid.setParent(this);

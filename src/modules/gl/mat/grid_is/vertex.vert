@@ -2,14 +2,12 @@
 #define MTAU 6.28318530718
 
 attribute vec2 position;
-// attribute vec3 normal;
+attribute float a_rand;
 
 uniform mat4 modelViewMatrix;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
-
-// uniform mat3 normalMatrix;
 
 uniform float u_time;
 
@@ -18,18 +16,17 @@ varying vec2 v_uv;
 
 void main() {
   vec3 pos = vec3(
-    position.x, 
-    position.y, 
-    0.
+    (position.x + a_rand - .5), 
+    (position.y + a_rand - .5) , 
+    0.03
   );
-
 
   // size
   vec4 mPos = modelMatrix * vec4(pos, 1.0);
   vec4 mvPos = viewMatrix * mPos;
 
   // gl_PointSize = 50. / length(mvPos.xyz) * 1.;
-  gl_PointSize = 4.;
+  gl_PointSize = 8.;
 
   // gl_PointSize = 5.;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);

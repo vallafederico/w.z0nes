@@ -6,7 +6,7 @@ export default class extends Mesh {
     super(gl);
     this.gl = gl;
 
-    const ig = new Plane(this.gl, 0.5, 0.5, 1, 1);
+    const ig = new Plane(this.gl, 1, 1, 1, 1);
 
     this.geometry = new Geometry(this.gl, {
       index: ig.attributes.index,
