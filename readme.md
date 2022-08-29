@@ -2,4 +2,4 @@
 
 ### Notes
 
-- [] recompute and merge array based on instances and not on selection (?)
+- [ ] recompute and merge array based on instances and not on selection (?)
