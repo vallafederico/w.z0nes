@@ -9,7 +9,7 @@ export default class extends Mesh {
     this.mode = this.gl.POINTS;
     this.geometry = new Geometry(this.gl, {
       position: { size: 2, data: instances.array },
-      a_rand: { size: 1, data: instances.rand },
+      a_rand: { size: 2, data: instances.rand },
     });
 
     this.program = new Program(this.gl, {});

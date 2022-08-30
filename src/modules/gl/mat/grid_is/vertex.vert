@@ -2,7 +2,7 @@
 #define MTAU 6.28318530718
 
 attribute vec2 position;
-attribute float a_rand;
+attribute vec2 a_rand;
 
 uniform mat4 modelViewMatrix;
 uniform mat4 modelMatrix;
@@ -16,8 +16,8 @@ varying vec2 v_uv;
 
 void main() {
   vec3 pos = vec3(
-    (position.x + a_rand - .5), 
-    (position.y + a_rand - .5) , 
+    (position.x + a_rand.x - .5), 
+    (position.y + a_rand.y - .5) , 
     0.03
   );
 

@@ -1,5 +1,6 @@
 import Gl from "./modules/gl/gl";
-import Loader from "./modules/loader.js";
+import Loader from "./modules/loader";
+import { Router } from "./modules/router";
 
 class App {
   constructor() {
@@ -8,7 +9,14 @@ class App {
   }
 
   async load() {
+    // # ROUTES
+    // this.router = new Router();
+    // this.router.on("T_START", (data) => this.initTransition(data));
+
+    // # GL
     this.gl = new Gl();
+
+    // # load + init
     this.loader = new Loader(this.gl.gl);
     const loaded = await this.loader.load();
 
@@ -20,7 +28,6 @@ class App {
   }
 
   /* --- Loop */
-
   update() {
     window.requestAnimationFrame(this.update.bind(this));
   }
@@ -28,6 +35,11 @@ class App {
   onResize() {
     // console.log('resizing');
   }
+
+  /* --- Routes */
+  // initTransition(data) {
+  //   console.log(data);
+  // }
 
   /* --- Events */
 }

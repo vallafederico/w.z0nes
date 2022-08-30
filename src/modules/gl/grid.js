@@ -21,12 +21,6 @@ export default class extends Transform {
     // 1. points, offsetted
     this.points = new Points(this.gl, { points });
     this.points.setParent(this);
-
-    // this.points2 = new Points(this.gl, { points });
-    // this.points2.position.x -= 0.5;
-    // this.points2.position.y -= 0.5;
-    // this.points2.setParent(this);
-
     // 2. squares, centerd
     this.squares = new Quads(this.gl, { points, planes });
     this.squares.setParent(this);
@@ -47,29 +41,27 @@ export default class extends Transform {
 
     // ## random instances values
     const insPos = new Float32Array(this.config.grid.inNum * 2);
-    const insRand = new Float32Array(this.config.grid.inNum);
+    const insRand = new Float32Array(this.config.grid.inNum * 2);
     let insIndex = 0;
-    let insRandIndex = 0;
 
     this.config.zones.forEach((item, i) => {
-      // xy offset
+      // xy PFFSET
       const x = points.array[item.id * 2];
       const y = points.array[item.id * 2 + 1];
       planesOffsetArray.set([x, y], i * 2);
 
-      // state
+      // STATE
       planesState.set([item.state], i);
 
-      // check for instances
+      // check for INSTANCES
       if (item.in.length > 0) {
         item.in.forEach((inst) => {
           insPos.set([x, y], insIndex);
-          insRand.set([Math.random() - 0.5], insRandIndex);
-
-          // advance counter
+          insRand.set(
+            [(Math.random() - 0.5) * 0.9, (Math.random() - 0.5) * 0.9],
+            insIndex
+          );
           insIndex += 2;
-          insRandIndex += 1;
-          // console.log(item.in, insIndex);
         });
       }
     });

@@ -16,12 +16,13 @@ export default class {
     this.wrapper.appendChild(this.gl.canvas);
 
     this.camera = new Cam(this.gl, {});
-    this.camera.position.set(0, 0, 250);
+    this.gl.camera = this.camera;
+    this.camera.position.set(0, 0, 100);
 
     this.resize();
 
     // this.camera.lookAt([0, 0, 0]);
-    this.controls = new Orbit(this.camera);
+    // this.controls = new Orbit(this.camera);
   }
 
   init(loaded) {
