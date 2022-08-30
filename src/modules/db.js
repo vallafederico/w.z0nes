@@ -15,6 +15,7 @@ export default class {
 
     let last;
     this.config.zones = [];
+    this.config.instances = [];
     [...document.querySelectorAll('[data-project="meta"]')].forEach(
       (item, i) => {
         const content = JSON.parse(item.textContent);
@@ -39,6 +40,7 @@ export default class {
         }
 
         // get total INSTANCES number
+        this.config.instances.push(...content.in);
         this.config.grid.inNum += content.in.length;
       }
     );

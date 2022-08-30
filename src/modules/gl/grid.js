@@ -25,7 +25,12 @@ export default class extends Transform {
     this.squares = new Quads(this.gl, { points, planes });
     this.squares.setParent(this);
     // 3. instance particles, centered + random
-    this.is = new Is(this.gl, { points, planes, instances });
+    this.is = new Is(this.gl, {
+      points,
+      planes,
+      instances,
+      number: this.config.grid.inNum,
+    });
     this.is.setParent(this);
   }
 
@@ -45,7 +50,7 @@ export default class extends Transform {
     let insIndex = 0;
 
     this.config.zones.forEach((item, i) => {
-      // xy PFFSET
+      // xy OFFSET
       const x = points.array[item.id * 2];
       const y = points.array[item.id * 2 + 1];
       planesOffsetArray.set([x, y], i * 2);

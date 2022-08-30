@@ -8,13 +8,14 @@
 
 ##### Navigation
 
-- [ ] GPU picking
+- [x] GPU picking
 - [ ] Tie Pick event to router and page transitions
 - [ ] Transition back to same position
 
 ##### UI
 
 - [ ] Swap textures for Zones
+- [ ] Base XY movement on z position (and vice versa?)
 
 ##### Fixes
 

@@ -55,6 +55,10 @@ export default class extends Transform {
     document.onmousedown = () => (this.mouse.down = true);
     document.onmouseup = () => (this.mouse.down = false);
     document.onmousemove = (e) => this.onMouseMove(e);
+
+    // temp
+    this.gl.camera.position.x = -30;
+    this.gl.camera.position.y = 30;
   }
 
   onWheel(e) {
@@ -79,5 +83,10 @@ export default class extends Transform {
     if (this.gl.camera.position.x < -50) this.gl.camera.position.x = -50;
     if (this.gl.camera.position.y > 50) this.gl.camera.position.y = 50;
     if (this.gl.camera.position.y < -50) this.gl.camera.position.y = -50;
+  }
+
+  // ##PICKING
+  onPick(e) {
+    this.grid.is.program.uniforms.u_id_toggle = 1;
   }
 }

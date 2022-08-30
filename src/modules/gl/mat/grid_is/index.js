@@ -9,15 +9,13 @@ export default class extends Program {
       fragment: fragment,
     });
 
-    // console.log(this);
-
-    // console.log(this.uniforms);
     this.transparent = null;
     this.cullFace = null;
     // this.depthTest = false;
 
     this.uniforms = {
       u_time: { value: 0 },
+      u_id_toggle: { value: 0 },
     };
   }
 

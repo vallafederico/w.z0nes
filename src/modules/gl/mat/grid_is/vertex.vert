@@ -3,6 +3,8 @@
 
 attribute vec2 position;
 attribute vec2 a_rand;
+attribute vec4 a_id;
+varying vec4 v_id;
 
 uniform mat4 modelViewMatrix;
 uniform mat4 modelMatrix;
@@ -26,11 +28,11 @@ void main() {
   vec4 mvPos = viewMatrix * mPos;
 
   // gl_PointSize = 50. / length(mvPos.xyz) * 1.;
-  gl_PointSize = 8.;
+  gl_PointSize = 22.;
 
   // gl_PointSize = 5.;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 
   v_uv = vec2(0., 0.);
-  // v_id = a_id;
+  v_id = a_id;
 }
