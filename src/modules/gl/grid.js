@@ -18,11 +18,13 @@ export default class extends Transform {
   create() {
     const { points, planes, instances } = this.compute();
 
+    // console.log();
+
     // 1. points, offsetted
     this.points = new Points(this.gl, { points });
     this.points.setParent(this);
     // 2. squares, centerd
-    this.squares = new Quads(this.gl, { points, planes });
+    this.squares = new Quads(this.gl, { points, planes }, this.loaded);
     this.squares.setParent(this);
     // 3. instance particles, centered + random
     this.is = new Is(this.gl, {

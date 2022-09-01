@@ -51,6 +51,7 @@ class App {
   /* --- Routes */
   initTransition({ next }) {
     // console.log("router transitioning in APP", next);
+    this.gl.scene.toggleMovement();
     this.router.swap();
   }
 

@@ -15,6 +15,7 @@ void main() {
         return;
     }
 
-    gl_FragColor.rgb = vec3(v_id.rgb);
-    gl_FragColor.a = 1.0;
+
+    gl_FragColor.rgb = vec3(.9, .2, .3);
+    gl_FragColor.a = 1.;
 }

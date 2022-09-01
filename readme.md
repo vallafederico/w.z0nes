@@ -12,14 +12,16 @@
 - [x] Tie Pick event to router and page transitions
 
 - [x] Transition back to same position
-- [ ] block grid movements when in project position
+- [x] block grid movements when in project position
 
 ##### UI
 
-- [ ] Swap textures for Zones
+- [x] svg optim
 
-- [ ] ease movement
-- [ ] Base XY movement on z position (and vice versa?)
+- [x] Swap textures for Zones
+
+- [x] ease movement
+- [x] Base XY movement on z position (and vice versa?)
 
 ##### Fixes
 

@@ -1,6 +1,8 @@
 import { Transform } from "ogl";
 import Grid from "./grid";
 
+import { lerp, clamp } from "../utils/math";
+
 export default class extends Transform {
   constructor(gl, { loaded, config }) {
     super();
@@ -10,11 +12,15 @@ export default class extends Transform {
     this.config = config;
 
     this.mvmt = {
-      x: 0,
+      x: -0,
       y: 0,
-      z: 0,
+      z: 800,
+      ex: -0,
+      ey: 0,
+      ez: 800,
+      canMove: true,
+      lerp: 0.1,
     };
-    // console.log("GL: scene", this.loaded, this.data);
 
     this.create();
   }
@@ -35,7 +41,35 @@ export default class extends Transform {
 
   render(t) {
     if (!this.isOn) return;
+    // console.log("h");
     // this.grid?.render(t);
+
+    this.renderMovement();
+  }
+
+  toggleMovement() {
+    this.mvmt.canMove = !this.mvmt.canMove;
+    console.log("toggle movement", this.mvmt.canMove);
+  }
+
+  renderMovement() {
+    if (!this.mvmt.canMove) return;
+
+    // compute bounds
+    this.mvmt.ex = clamp(-50, 50, this.mvmt.ex);
+    this.mvmt.ey = clamp(-50, 50, this.mvmt.ey);
+    this.mvmt.ez = clamp(3, 70, this.mvmt.ez);
+
+    // compute movement
+    this.mvmt.x = lerp(this.mvmt.x, this.mvmt.ex, this.mvmt.lerp);
+    this.mvmt.y = lerp(this.mvmt.y, this.mvmt.ey, this.mvmt.lerp);
+    this.mvmt.z = lerp(this.mvmt.z, this.mvmt.ez, this.mvmt.lerp);
+
+    if (this.gl.camera && this.mvmt) {
+      this.gl.camera.position.x = this.mvmt.x;
+      this.gl.camera.position.y = this.mvmt.y;
+      this.gl.camera.position.z = this.mvmt.z;
+    }
   }
 
   resize(vp) {
@@ -56,37 +90,28 @@ export default class extends Transform {
     document.onmouseup = () => (this.mouse.down = false);
     document.onmousemove = (e) => this.onMouseMove(e);
 
-    // temp
-    this.gl.camera.position.x = -30;
-    this.gl.camera.position.y = 30;
+    // # temp
+    // this.gl.camera.position.x = -30;
+    // this.gl.camera.position.y = 30;
   }
 
   onWheel(e) {
-    // console.log(e.deltaY);
-
-    // move
-    this.gl.camera.position.z += e.deltaY * 0.05;
-    // bounds
-    if (this.gl.camera.position.z > 100) this.gl.camera.position.z = 100;
-    if (this.gl.camera.position.z < 3) this.gl.camera.position.z = 3;
+    if (!this.mvmt.canMove) return;
+    this.mvmt.ez += e.deltaY * 0.02;
   }
 
   onMouseMove(e) {
+    if (!this.mvmt.canMove) return;
     if (!this.mouse.down) return;
-    // console.log(e.movementX, e.movementY);
 
-    // move
-    this.gl.camera.position.x -= e.movementX * 0.03;
-    this.gl.camera.position.y += e.movementY * 0.03;
-    // bounds
-    if (this.gl.camera.position.x > 50) this.gl.camera.position.x = 50;
-    if (this.gl.camera.position.x < -50) this.gl.camera.position.x = -50;
-    if (this.gl.camera.position.y > 50) this.gl.camera.position.y = 50;
-    if (this.gl.camera.position.y < -50) this.gl.camera.position.y = -50;
+    // compute movememnt
+    this.mvmt.ex -= e.movementX * 0.03 * (this.mvmt.z * 0.008);
+    this.mvmt.ey += e.movementY * 0.03 * (this.mvmt.z * 0.008);
   }
 
   // ##PICKING
   onPick(e) {
+    if (!this.mvmt.canMove) return;
     this.grid.is.program.uniforms.u_id_toggle = 1;
   }
 }

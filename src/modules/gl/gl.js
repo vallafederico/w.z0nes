@@ -12,7 +12,7 @@ export default class {
 
     this.renderer = new Renderer({ dpr: 2 });
     this.gl = this.renderer.gl;
-    this.gl.clearColor(0.94, 0.94, 0.94, 1);
+    this.gl.clearColor(1, 1, 1, 1);
 
     this.wrapper.appendChild(this.gl.canvas);
 
@@ -128,7 +128,7 @@ export default class {
 
     // reset
     this.scene.grid.is.program.uniforms.u_id_toggle.value = 0; // set material to pickable value
-    this.gl.clearColor(0.94, 0.94, 0.94, 1);
+    this.gl.clearColor(1, 1, 1, 1);
 
     this.shouldPick = false;
   }

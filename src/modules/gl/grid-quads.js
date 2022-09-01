@@ -2,9 +2,12 @@ import { Geometry, Mesh, Plane } from "ogl";
 import Program from "./mat/grid_quads";
 
 export default class extends Mesh {
-  constructor(gl, { points, planes }) {
+  constructor(gl, { points, planes }, { atlas_state }) {
     super(gl);
     this.gl = gl;
+    // this.assets = assets;
+
+    // console.log(atlas_state);
 
     const ig = new Plane(this.gl, 1, 1, 1, 1);
 
@@ -18,7 +21,7 @@ export default class extends Mesh {
     });
 
     this.frustumCulled = false;
-    this.program = new Program(this.gl, {});
+    this.program = new Program(this.gl, { atlas_state });
 
     this.position.x = -points.offset;
     this.position.y = -points.offset;
