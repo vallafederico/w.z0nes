@@ -9,12 +9,16 @@
 ##### Navigation
 
 - [x] GPU picking
-- [ ] Tie Pick event to router and page transitions
-- [ ] Transition back to same position
+- [x] Tie Pick event to router and page transitions
+
+- [x] Transition back to same position
+- [ ] block grid movements when in project position
 
 ##### UI
 
 - [ ] Swap textures for Zones
+
+- [ ] ease movement
 - [ ] Base XY movement on z position (and vice versa?)
 
 ##### Fixes

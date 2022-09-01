@@ -69,7 +69,8 @@ export class R extends Emitter {
   }
 
   onClick(e, link) {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    // e.preventDefault();
     if (link.pathname === window.location.pathname) return;
     this.onLinkClicked();
 

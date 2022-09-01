@@ -1,4 +1,5 @@
 import { Renderer, Orbit, RenderTarget, Vec2 } from "ogl";
+import Emitter from "tiny-emitter";
 import Cam from "./_camera.js";
 import Scene from "./_scene.js";
 
@@ -20,6 +21,7 @@ export default class {
     this.camera.position.set(0, 0, 100);
 
     this.resize();
+    this.events = new Emitter();
 
     // this.camera.lookAt([0, 0, 0]);
     // this.controls = new Orbit(this.camera);
@@ -70,11 +72,12 @@ export default class {
   }
 
   instanceClicked(id) {
-    console.log(
-      "picker instance clicked:",
-      id,
-      this.db.config.instances[id - 1]
-    );
+    this.events.emit("clicked", id - 1);
+    // console.log(
+    //   "picker instance clicked:",
+    //   id,
+    //   this.db.config.instances[id - 1]
+    // );
   }
 
   /** -- Main Loop */
