@@ -9,7 +9,8 @@ export default class extends Program {
       fragment: fragment,
     });
 
-    console.log(atlas_state);
+    // console.log(atlas_state);
+    const { atlas_alt } = window.db.loaded;
 
     // console.log(this.uniforms);
     this.transparent = null;
@@ -19,10 +20,22 @@ export default class extends Program {
     this.uniforms = {
       u_time: { value: 0 },
       u_t1: { value: atlas_state },
+      u_t2: { value: atlas_alt },
+      // u_cam: { value: [0, 0, 0] },
+      // animation
+      u_a_inOut: { value: 1 },
     };
   }
 
   set time(t) {
     this.uniforms.u_time.value = t;
   }
+
+  set inOut(val) {
+    this.uniforms.u_a_inOut.value = val;
+  }
+
+  // set camera(camera) {
+  //   this.uniforms.u_cam.value = camera;
+  // }
 }

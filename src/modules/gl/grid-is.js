@@ -1,4 +1,4 @@
-import { Geometry, Mesh } from "ogl";
+import { Geometry, Mesh, Plane } from "ogl";
 import Program from "./mat/grid_is";
 
 export default class extends Mesh {
@@ -6,19 +6,45 @@ export default class extends Mesh {
     super(gl);
     this.gl = gl;
 
-    this.mode = this.gl.POINTS;
+    // this.mode = this.gl.POINTS;
 
     const idArray = this.setupPick(number);
-    this.geometry = new Geometry(this.gl, {
-      position: { size: 2, data: instances.array },
-      a_rand: { size: 2, data: instances.rand },
-      a_id: { size: 4, data: idArray },
+    this.geometry = new Plane(this.gl, {
+      width: 0.1,
+      height: 0.1,
+      attributes: {
+        a_pos: { instanced: 1, size: 2, data: instances.array },
+        a_rand: { instanced: 1, size: 2, data: instances.rand },
+        a_id: { instanced: 1, size: 4, data: idArray },
+      },
     });
 
+    this.frustumCulled = false;
     this.program = new Program(this.gl, {});
 
     this.position.x = -points.offset + 0.5;
     this.position.y = -points.offset + 0.5;
+  }
+
+  render(t) {
+    // // z - position
+    if (window.App.gl.camera.position.z < 5) {
+      if (this.isNear) return;
+      // console.log("instance-near");
+      this.animateNear(true);
+      this.isNear = true;
+    } else {
+      if (!this.isNear) return;
+      // console.log("instance-far");
+      this.animateNear(false);
+      this.isNear = false;
+    }
+  }
+
+  /* -- Animation */
+
+  animateNear(isNear) {
+    this.program.inOut = isNear ? 0 : 1;
   }
 
   setupPick(number) {

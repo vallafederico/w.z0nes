@@ -29,7 +29,7 @@ void main() {
   vec4 mvPos = viewMatrix * mPos;
 
   // gl_PointSize = 50. / length(mvPos.xyz) * 1.;
-  gl_PointSize = 4.;
+  gl_PointSize = 3.;
 
   // gl_PointSize = 5.;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);

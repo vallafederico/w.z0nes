@@ -16,15 +16,20 @@ export default class Preloader extends Emitter {
     this.db = new Db();
 
     // # loads
-    const [atlas_state] = await Promise.all([
+    const [atlas_state, sphere_tx, atlas_alt] = await Promise.all([
       await loadTexture(this.gl, LIB.atlas_state),
+      await loadTexture(this.gl, LIB.sphere_tx),
+      await loadTexture(this.gl, LIB.atlas_alt),
     ]);
 
     const loaded = {
       atlas_state,
+      sphere_tx,
+      atlas_alt,
     };
 
     this.db.loaded = loaded;
+    window.db = this.db;
 
     return this.db;
   }

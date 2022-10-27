@@ -5,6 +5,7 @@ attribute vec3 position;
 attribute vec2 uv;
 attribute vec2 a_offset;
 attribute float a_state;
+attribute float a_rand;
 
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
@@ -14,6 +15,7 @@ uniform float u_time;
 
 varying vec2 v_uv;
 varying float v_state;
+varying float v_rand;
 // varying vec4 v_id;
 
 void main() {
@@ -28,4 +30,5 @@ void main() {
 
   v_uv = uv;
   v_state = a_state;
+  v_rand = a_rand;
 }

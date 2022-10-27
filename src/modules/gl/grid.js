@@ -18,8 +18,6 @@ export default class extends Transform {
   create() {
     const { points, planes, instances } = this.compute();
 
-    // console.log();
-
     // 1. points, offsetted
     this.points = new Points(this.gl, { points });
     this.points.setParent(this);
@@ -36,10 +34,20 @@ export default class extends Transform {
     this.is.setParent(this);
   }
 
+  render(t) {
+    // this.points?.render(t)
+
+    this.squares?.render(t);
+    this.is?.render(t);
+  }
+
+  /* --- Utils */
+
   compute() {
     // ## Setup Grid
     const pointNum = this.config.grid.num;
     const points = calcGrid(pointNum);
+    // console.log(points);
 
     // ## setup planes
     const filledSquares = this.config.zones.length;
@@ -87,6 +95,12 @@ export default class extends Transform {
 
     // console.log(insRand);
     return { points, planes, instances };
+  }
+
+  /** -- Animation */
+
+  animateNear(isNear) {
+    this.squares.animateNear(isNear);
   }
 }
 

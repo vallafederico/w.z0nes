@@ -65,7 +65,7 @@ class App {
   /* --- Events */
 }
 
-new App();
+window.App = new App();
 
 /*
 

@@ -10,7 +10,7 @@ export default class {
       dpr: Math.min(window.devicePixelRatio, 2),
     };
 
-    this.renderer = new Renderer({ dpr: 2 });
+    this.renderer = new Renderer({ dpr: 2, alpha: true });
     this.gl = this.renderer.gl;
     this.gl.clearColor(1, 1, 1, 1);
 
@@ -18,9 +18,9 @@ export default class {
 
     this.camera = new Cam(this.gl, {});
     this.gl.camera = this.camera;
+
     this.camera.position.set(0, 0, 100);
 
-    this.resize();
     this.events = new Emitter();
 
     // this.camera.lookAt([0, 0, 0]);

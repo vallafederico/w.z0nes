@@ -15,11 +15,20 @@ export default class extends Transform {
       x: -0,
       y: 0,
       z: 800,
-      ex: -0,
-      ey: 0,
-      ez: 800,
+      ex: 0, // 0
+      ey: 0, // 0
+      ez: 800, // 800
       canMove: true,
       lerp: 0.1,
+    };
+
+    this.a = {
+      // near / far view
+      isNear: false,
+      nearValue: 30,
+      // instance near
+      isInstanceNear: false,
+      instanceNearValue: 25,
     };
 
     this.create();
@@ -42,14 +51,16 @@ export default class extends Transform {
   render(t) {
     if (!this.isOn) return;
     // console.log("h");
-    // this.grid?.render(t);
+    this.grid?.render(t);
 
     this.renderMovement();
   }
 
   toggleMovement() {
     this.mvmt.canMove = !this.mvmt.canMove;
-    console.log("toggle movement", this.mvmt.canMove);
+
+    if (this.mvmt.canMove) this.mvmt.ez += 50;
+    // console.log("toggle movement", this.mvmt.canMove);
   }
 
   renderMovement() {
@@ -58,18 +69,22 @@ export default class extends Transform {
     // compute bounds
     this.mvmt.ex = clamp(-50, 50, this.mvmt.ex);
     this.mvmt.ey = clamp(-50, 50, this.mvmt.ey);
-    this.mvmt.ez = clamp(3, 70, this.mvmt.ez);
+    this.mvmt.ez = clamp(2, 100, this.mvmt.ez);
 
     // compute movement
     this.mvmt.x = lerp(this.mvmt.x, this.mvmt.ex, this.mvmt.lerp);
     this.mvmt.y = lerp(this.mvmt.y, this.mvmt.ey, this.mvmt.lerp);
-    this.mvmt.z = lerp(this.mvmt.z, this.mvmt.ez, this.mvmt.lerp);
+    this.mvmt.z = lerp(this.mvmt.z, this.mvmt.ez, this.mvmt.lerp * 0.5);
+
+    // animationtrigger
 
     if (this.gl.camera && this.mvmt) {
       this.gl.camera.position.x = this.mvmt.x;
       this.gl.camera.position.y = this.mvmt.y;
       this.gl.camera.position.z = this.mvmt.z;
     }
+
+    // console.log(window.App.gl.camera.pixelSize);
   }
 
   resize(vp) {
