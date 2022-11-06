@@ -1,91 +1,74 @@
-import { Geometry, Mesh, Plane } from "ogl";
+import { Transform, Mesh, Plane } from "ogl";
 import Program from "./mat/grid_quads";
+import Alias from "./grid-quads-alias";
+import Picker from "./util/picker";
 
-export default class extends Mesh {
-  constructor(gl, { points, planes }, { atlas_state }) {
-    super(gl);
+export default class extends Transform {
+  constructor(gl, { points, planes }) {
+    super();
     this.gl = gl;
-
-    const ig = new Plane(this.gl, 1, 1, 1, 1);
-
-    const random = getFloat32RandomValue(
-      window.db.config.zones.length,
-      2,
-      true
-    );
-
-    this.geometry = new Geometry(this.gl, {
-      index: ig.attributes.index,
-      position: ig.attributes.position,
-      uv: ig.attributes.uv,
-      // attributes
-      a_offset: { instanced: 1, size: 2, data: planes.array },
-      a_state: { instanced: 1, size: 1, data: planes.state },
-      a_rand: {
-        instanced: 1,
-        size: 1,
-        data: random,
-      },
-    });
-
-    this.frustumCulled = false;
-    this.program = new Program(this.gl, { atlas_state });
 
     this.position.x = -points.offset;
     this.position.y = -points.offset;
+    this.frustumCulled = false;
+
+    this.create(planes, points);
+  }
+
+  create(planes, points) {
+    const { state, array } = planes;
+
+    // meshes
+    this.quads = [];
+    for (let i = 0; i < state.length; i++) {
+      const quad = new Quad(this.gl);
+      quad.program.uniforms.u_state.value = state[i];
+      quad.position.set(array[i * 2], array[i * 2 + 1], 0);
+      quad.setParent(this);
+      this.quads.push(quad);
+    }
+
+    // picker
+    this.picker = new Picker(this.gl);
+    this.picker.e.on("INTERSECTING", (id) => this.intersecting(id));
+    const values = this.picker.getPickingValues(state.length);
+
+    // alias for picking
+    this.alias = new Alias(this.gl, { planes, idArray: values });
+    this.alias.setParent(this);
+    this.picker._group = this.alias;
   }
 
   render(t) {
-    // z - position
-    if (
-      window.App.gl.camera.position.z < 30 &&
-      window.App.gl.camera.position.z > 5
-    ) {
-      if (this.isNear) return;
-      // console.log("quads-near");
-      this.animateNear(true);
-      this.isNear = true;
-    } else {
-      if (!this.isNear) return;
-      // console.log("quads-far");
-      this.animateNear(false);
-      this.isNear = false;
-    }
+    this.picker.render(t);
+    this.quads.forEach((quad) => quad.render(t));
 
-    // z - disappearance last
-    if (window.App.gl.camera.position.z < 5) {
-      if (!this.isNearNear) return;
-      // console.log("quads-near");
-      this.animateNear(false);
-      this.isNearNear = false;
-    } else {
-      if (this.isNearNear) return;
-      // console.log("quads-far");
-      this.animateNear(true);
-      this.isNearNear = true;
-    }
+    // console.log(this.gl.camera.position.z);
   }
-  /* -- Animation */
 
-  animateNear(isNear) {
-    this.program.inOut = isNear ? 0 : 1;
+  /** -- Animation */
+  intersecting(id) {
+    // console.log("int -", id - 1);
+
+    this.quads.forEach((quad, i) => {
+      if (i === id - 1) {
+        quad.program.inOut = 0;
+      } else {
+        quad.program.inOut = 1;
+      }
+    });
   }
 }
 
-/**
- * Helpers
- */
-
-function getFloat32RandomValue(length, size = 1, floored = false) {
-  const array = new Float32Array(length);
-
-  for (let i = 0; i < length; i++) {
-    let val = Math.random() * size;
-
-    if (floored) val = Math.floor(val);
-
-    array[i] = val;
+// ---------------- single quad
+class Quad extends Mesh {
+  constructor(gl) {
+    super(gl);
+    this.gl = gl;
+    this.geometry = new Plane(this.gl, 1, 1, 1, 1);
+    this.program = new Program(this.gl);
+    this.frustumCulled = false;
   }
 
-  return array;
+  render(t) {}
 }

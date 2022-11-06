@@ -59,7 +59,6 @@ export default class {
     // check it not being a click&drag
     // ...
 
-    // set the picker position
     // prettier-ignore
     this.picker.set(
       (e.x * this.gl.canvas.width) / this.gl.canvas.clientWidth,
@@ -73,11 +72,6 @@ export default class {
 
   instanceClicked(id) {
     this.events.emit("clicked", id - 1);
-    // console.log(
-    //   "picker instance clicked:",
-    //   id,
-    //   this.db.config.instances[id - 1]
-    // );
   }
 
   /** -- Main Loop */

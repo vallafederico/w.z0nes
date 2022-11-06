@@ -15,7 +15,7 @@ export default class extends Mesh {
 
     this.program = new Program(this.gl, {});
 
-    this.position.x = -points.offset + 0.5;
-    this.position.y = -points.offset + 0.5;
+    this.position.x = -points.offset;
+    this.position.y = -points.offset;
   }
 }

@@ -21,9 +21,11 @@ export default class extends Transform {
     // 1. points, offsetted
     this.points = new Points(this.gl, { points });
     this.points.setParent(this);
+
     // 2. squares, centerd
-    this.squares = new Quads(this.gl, { points, planes }, this.loaded);
-    this.squares.setParent(this);
+    this.quads = new Quads(this.gl, { points, planes });
+    this.quads.setParent(this);
+
     // 3. instance particles, centered + random
     this.is = new Is(this.gl, {
       points,
@@ -36,8 +38,7 @@ export default class extends Transform {
 
   render(t) {
     // this.points?.render(t)
-
-    this.squares?.render(t);
+    this.quads?.render(t);
     this.is?.render(t);
   }
 

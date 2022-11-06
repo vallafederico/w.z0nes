@@ -3,14 +3,14 @@ import vertex from "./vertex.vert";
 import fragment from "./fragment.frag";
 
 export default class extends Program {
-  constructor(gl, { atlas_state }) {
+  constructor(gl) {
     super(gl, {
       vertex: vertex,
       fragment: fragment,
     });
 
     // console.log(atlas_state);
-    const { atlas_alt } = window.db.loaded;
+    const { atlas_alt, atlas_state } = window.db.loaded;
 
     // console.log(this.uniforms);
     this.transparent = null;
@@ -18,10 +18,11 @@ export default class extends Program {
     // this.depthTest = false;
 
     this.uniforms = {
+      u_state: { value: 0 },
+      // functional
       u_time: { value: 0 },
       u_t1: { value: atlas_state },
       u_t2: { value: atlas_alt },
-      // u_cam: { value: [0, 0, 0] },
       // animation
       u_a_inOut: { value: 1 },
     };

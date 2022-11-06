@@ -18,17 +18,19 @@ varying float v_state;
 varying float v_rand;
 // varying vec4 v_id;
 
+uniform vec3 u_data;
+
 void main() {
   vec3 pos = position * 1.;
   // pos.xy *= a_state; // test state
 
   // position
-  pos.x += a_offset.x;
-  pos.y += a_offset.y;
+  // pos.x += u_data.x;
+  // pos.y += u_data.y;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 
   v_uv = uv;
-  v_state = a_state;
-  v_rand = a_rand;
+  // v_state = a_state;
+  // v_rand = a_rand;
 }
