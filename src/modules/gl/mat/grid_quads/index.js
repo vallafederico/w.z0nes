@@ -12,8 +12,10 @@ export default class extends Program {
     // console.log(atlas_state);
     const { atlas_alt, atlas_state } = window.db.loaded;
 
-    // console.log(this.uniforms);
-    this.transparent = null;
+    // console.log(this);
+    // this.transparent = true;
+    // this.setBlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
     this.cullFace = null;
     // this.depthTest = false;
 
@@ -25,6 +27,7 @@ export default class extends Program {
       u_t2: { value: atlas_alt },
       // animation
       u_a_inOut: { value: 1 },
+      u_a_visible: { value: 1 },
     };
   }
 
@@ -34,6 +37,10 @@ export default class extends Program {
 
   set inOut(val) {
     this.uniforms.u_a_inOut.value = val;
+  }
+
+  set visible(val) {
+    this.uniforms.u_a_visible.value = val;
   }
 
   // set camera(camera) {

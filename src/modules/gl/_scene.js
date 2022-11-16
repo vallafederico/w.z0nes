@@ -15,9 +15,9 @@ export default class extends Transform {
       x: -0,
       y: 0,
       z: 800,
-      ex: 0, // 0
-      ey: 0, // 0
-      ez: 800, // 800
+      ex: -48, // 0
+      ey: 50, // 0
+      ez: 20, // 800
       canMove: true,
       lerp: 0.1,
     };
@@ -69,7 +69,7 @@ export default class extends Transform {
     // compute bounds
     this.mvmt.ex = clamp(-50, 50, this.mvmt.ex);
     this.mvmt.ey = clamp(-50, 50, this.mvmt.ey);
-    this.mvmt.ez = clamp(2, 100, this.mvmt.ez);
+    this.mvmt.ez = clamp(3, 100, this.mvmt.ez);
 
     // compute movement
     this.mvmt.x = lerp(this.mvmt.x, this.mvmt.ex, this.mvmt.lerp);

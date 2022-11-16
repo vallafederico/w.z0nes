@@ -22,5 +22,5 @@ void main() {
     vec4 img = texture2D(u_tx, v_uv);
 
     gl_FragColor.rgb = img.rgb;
-    gl_FragColor.a = (1. - v_a_inOut);
+    gl_FragColor.a = (1. - v_a_inOut) * img.a;
 }

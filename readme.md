@@ -14,21 +14,17 @@
 - [x] Transition back to same position
 - [x] block grid movements when in project position
 
-##### UI
-
 - [x] svg optim
-
 - [x] Swap textures for Zones
-
 - [x] ease movement
 - [x] Base XY movement on z position (and vice versa?)
-
-##### Fixes
-
 - [x] recompute and merge array based on instances and not on selection (?)
 
-##### Gl
+##### UI
 
-- [ ] add PP
+- [ ] svgs on subpages
+- [ ] subpage elements
 
-### Notes
+#### Demo #1
+
+- [ ] solve transparency / alpha

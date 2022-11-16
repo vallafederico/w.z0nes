@@ -11,7 +11,7 @@ export default class extends Program {
 
     const { sphere_tx } = window.db.loaded;
 
-    // this.transparent = true;
+    this.transparent = true;
     this.cullFace = null;
     // this.depthTest = true;
 

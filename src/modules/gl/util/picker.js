@@ -52,11 +52,7 @@ export default class extends RenderTarget {
     if (id) {
       this.isIntersecting(id);
     } else {
-      if (!this.i.intersecting) return;
-      this.i.id = null;
-      this.i.intersecting = false;
-      // console.log("not intersecting anymore");
-      this.e.emit("INTERSECTING", null);
+      this.stopIntersecting();
     }
 
     // reset
@@ -79,6 +75,14 @@ export default class extends RenderTarget {
       // console.log("intersecting from NOT:", id);
       this.e.emit("INTERSECTING", id);
     }
+  }
+
+  stopIntersecting() {
+    if (!this.i.intersecting) return;
+    this.i.id = null;
+    this.i.intersecting = false;
+    // console.log("not intersecting anymore");
+    this.e.emit("INTERSECTING", null);
   }
 
   set _group(group) {

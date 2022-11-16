@@ -33,7 +33,7 @@ void main() {
 
     gl_FragColor.rgb = final_tx.rgb;
     // gl_FragColor.rgb = vec3(1., 0., 0.);
-    gl_FragColor.a = 1.0;
+    gl_FragColor.a = final_tx.a;
 }
 
 

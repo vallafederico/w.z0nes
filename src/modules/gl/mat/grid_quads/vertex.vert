@@ -12,6 +12,7 @@ uniform mat4 projectionMatrix;
 uniform mat3 normalMatrix;
 
 uniform float u_time;
+uniform float u_a_visible;
 
 varying vec2 v_uv;
 varying float v_state;
@@ -21,7 +22,7 @@ varying float v_rand;
 uniform vec3 u_data;
 
 void main() {
-  vec3 pos = position * 1.;
+  vec3 pos = position * u_a_visible;
   // pos.xy *= a_state; // test state
 
   // position

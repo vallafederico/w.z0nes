@@ -10,8 +10,13 @@ export default class {
       dpr: Math.min(window.devicePixelRatio, 2),
     };
 
-    this.renderer = new Renderer({ dpr: 2, alpha: true });
+    this.renderer = new Renderer({
+      dpr: 2,
+      alpha: true,
+      // premultipliedAlpha: false,
+    });
     this.gl = this.renderer.gl;
+    // console.log(this.gl.renderer);
     this.gl.clearColor(1, 1, 1, 1);
 
     this.wrapper.appendChild(this.gl.canvas);

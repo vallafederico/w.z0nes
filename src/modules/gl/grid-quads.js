@@ -40,10 +40,16 @@ export default class extends Transform {
   }
 
   render(t) {
-    this.picker.render(t);
-    this.quads.forEach((quad) => quad.render(t));
+    // picker check
+    if (window.App.gl.camera.position.z < 20) {
+      this.picker.render(t);
+    } else this.picker.stopIntersecting();
 
-    // console.log(this.gl.camera.position.z);
+    // this.quads.forEach((quad) => quad.render(t, inOut));
+
+    if (window.App.gl.camera.position.z < 5) {
+      this.quads.forEach((quad) => quad.render(t, 0));
+    } else this.quads.forEach((quad) => quad.render(t));
   }
 
   /** -- Animation */
@@ -70,5 +76,8 @@ class Quad extends Mesh {
     this.frustumCulled = false;
   }
 
-  render(t) {}
+  render(t, visible = 1) {
+    this.visible = visible;
+    // console.log(inOut);
+  }
 }

@@ -6,6 +6,8 @@ class App {
   constructor() {
     this.body = document.querySelector("body");
     this.load();
+
+    // console.log("hey");
   }
 
   async load() {
