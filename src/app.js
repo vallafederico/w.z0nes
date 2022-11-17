@@ -1,12 +1,14 @@
 import Gl from "./modules/gl/gl";
 import Loader from "./modules/loader";
 import { Router } from "./modules/router";
+import State from "./modules/state";
 
 class App {
   constructor() {
     this.body = document.querySelector("body");
     this.load();
 
+    this.state = new State();
     // console.log("hey");
   }
 
@@ -24,20 +26,12 @@ class App {
     const loaded = await this.loader.load();
 
     this.init(loaded);
+
+    console.log(window.App.state);
   }
 
   init(loaded) {
     this.instancesLinks = loaded.config.instancesLink;
-    // loaded.config.instancesLink.forEach((item, i) => {
-    //   console.log(item);
-
-    //   if (i === 0) {
-    //     // this.router?.onHover(item);
-    //     // this.router?.onClick(null, item);
-    //     // item
-    //   }
-    // });
-
     this.gl.init(loaded);
   }
 

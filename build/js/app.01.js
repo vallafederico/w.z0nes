@@ -4225,6 +4225,13 @@ ${addLineNumbers(fragment)}`);
     return Math.min(Math.max(num, min), max);
   }
 
+  // src/modules/controls.js
+  var CTRLS = {
+    limitXY: 50,
+    limitZ: 10,
+    limitZfar: 200
+  };
+
   // src/modules/gl/_scene.js
   var scene_default = class extends Transform {
     constructor(gl, { loaded, config }) {
@@ -4246,7 +4253,9 @@ ${addLineNumbers(fragment)}`);
         isNear: false,
         nearValue: 30,
         isInstanceNear: false,
-        instanceNearValue: 25
+        instanceNearValue: 25,
+        isInstanceView: false,
+        instanceViewValue: 0
       };
       this.create();
     }
@@ -4274,9 +4283,13 @@ ${addLineNumbers(fragment)}`);
     renderMovement() {
       if (!this.mvmt.canMove)
         return;
-      this.mvmt.ex = clamp(-50, 50, this.mvmt.ex);
-      this.mvmt.ey = clamp(-50, 50, this.mvmt.ey);
-      this.mvmt.ez = clamp(3, 100, this.mvmt.ez);
+      this.mvmt.ex = clamp(-CTRLS.limitXY, CTRLS.limitXY, this.mvmt.ex);
+      this.mvmt.ey = clamp(-CTRLS.limitXY, CTRLS.limitXY, this.mvmt.ey);
+      this.mvmt.ez = clamp(
+        CTRLS.limitZ - this.a.instanceViewValue,
+        CTRLS.limitZfar,
+        this.mvmt.ez
+      );
       this.mvmt.x = lerp4(this.mvmt.x, this.mvmt.ex, this.mvmt.lerp);
       this.mvmt.y = lerp4(this.mvmt.y, this.mvmt.ey, this.mvmt.lerp);
       this.mvmt.z = lerp4(this.mvmt.z, this.mvmt.ez, this.mvmt.lerp * 0.5);
@@ -4284,6 +4297,18 @@ ${addLineNumbers(fragment)}`);
         this.gl.camera.position.x = this.mvmt.x;
         this.gl.camera.position.y = this.mvmt.y;
         this.gl.camera.position.z = this.mvmt.z;
+      }
+    }
+    toInstanceView(flag) {
+      if (!this.a.isInstanceView) {
+        this.a.instanceViewValue = 10;
+        this.mvmt.ez = 3;
+        this.a.isInstanceView = true;
+        window.App.state.s.free = false;
+      } else {
+        this.a.instanceViewValue = 0;
+        this.a.isInstanceView = false;
+        window.App.state.s.free = true;
       }
     }
     resize(vp) {
@@ -4301,13 +4326,25 @@ ${addLineNumbers(fragment)}`);
       document.onmousedown = () => this.mouse.down = true;
       document.onmouseup = () => this.mouse.down = false;
       document.onmousemove = (e) => this.onMouseMove(e);
+      document.onkeyup = (e) => this.onKeyUp(e);
+    }
+    onKeyUp(e) {
+      if (e.key === " ") {
+        this.toInstanceView(true);
+      }
     }
     onWheel(e) {
       if (!this.mvmt.canMove)
         return;
       this.mvmt.ez += e.deltaY * 0.02;
+      if (this.gl.camera.position.z > 3) {
+        if (this.a.isInstanceView)
+          this.toInstanceView();
+      }
     }
     onMouseMove(e) {
+      if (!window.App.state.s.free)
+        return;
       if (!this.mvmt.canMove)
         return;
       if (!this.mouse.down)
@@ -4702,11 +4739,38 @@ ${addLineNumbers(fragment)}`);
     }
   };
 
+  // src/modules/state.js
+  var state_default = class {
+    constructor() {
+      this.s = {
+        free: true,
+        trigger: false,
+        instance: false
+      };
+    }
+    set free(value = true) {
+      this.s.trigger = false;
+      this.s.instance = false;
+      this.s.free = value;
+    }
+    set trigger(value = true) {
+      this.s.free = false;
+      this.s.instance = false;
+      this.s.trigger = value;
+    }
+    set instance(value = true) {
+      this.s.free = false;
+      this.s.trigger = false;
+      this.s.instance = value;
+    }
+  };
+
   // src/app.js
   var App = class {
     constructor() {
       this.body = document.querySelector("body");
       this.load();
+      this.state = new state_default();
     }
     async load() {
       this.gl = new gl_default();
@@ -4716,6 +4780,7 @@ ${addLineNumbers(fragment)}`);
       this.loader = new Preloader(this.gl.gl);
       const loaded = await this.loader.load();
       this.init(loaded);
+      console.log(window.App.state);
     }
     init(loaded) {
       this.instancesLinks = loaded.config.instancesLink;

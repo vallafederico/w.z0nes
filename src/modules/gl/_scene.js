@@ -2,6 +2,7 @@ import { Transform } from "ogl";
 import Grid from "./grid";
 
 import { lerp, clamp } from "../utils/math";
+import { CTRLS } from "../controls";
 
 export default class extends Transform {
   constructor(gl, { loaded, config }) {
@@ -29,6 +30,9 @@ export default class extends Transform {
       // instance near
       isInstanceNear: false,
       instanceNearValue: 25,
+      // instance view
+      isInstanceView: false,
+      instanceViewValue: 0,
     };
 
     this.create();
@@ -67,24 +71,42 @@ export default class extends Transform {
     if (!this.mvmt.canMove) return;
 
     // compute bounds
-    this.mvmt.ex = clamp(-50, 50, this.mvmt.ex);
-    this.mvmt.ey = clamp(-50, 50, this.mvmt.ey);
-    this.mvmt.ez = clamp(3, 100, this.mvmt.ez);
+    this.mvmt.ex = clamp(-CTRLS.limitXY, CTRLS.limitXY, this.mvmt.ex);
+    this.mvmt.ey = clamp(-CTRLS.limitXY, CTRLS.limitXY, this.mvmt.ey);
+    this.mvmt.ez = clamp(
+      CTRLS.limitZ - this.a.instanceViewValue,
+      CTRLS.limitZfar,
+      this.mvmt.ez
+    );
 
     // compute movement
     this.mvmt.x = lerp(this.mvmt.x, this.mvmt.ex, this.mvmt.lerp);
     this.mvmt.y = lerp(this.mvmt.y, this.mvmt.ey, this.mvmt.lerp);
     this.mvmt.z = lerp(this.mvmt.z, this.mvmt.ez, this.mvmt.lerp * 0.5);
 
-    // animationtrigger
-
+    // move camera
     if (this.gl.camera && this.mvmt) {
       this.gl.camera.position.x = this.mvmt.x;
       this.gl.camera.position.y = this.mvmt.y;
       this.gl.camera.position.z = this.mvmt.z;
     }
 
-    // console.log(window.App.gl.camera.pixelSize);
+    // console.log(this.gl.camera.position.z);
+  }
+
+  toInstanceView(flag) {
+    if (!this.a.isInstanceView) {
+      // console.log("IN");
+      this.a.instanceViewValue = 10;
+      this.mvmt.ez = 3;
+      this.a.isInstanceView = true;
+      window.App.state.s.free = false;
+    } else {
+      // console.log("OUT");
+      this.a.instanceViewValue = 0;
+      this.a.isInstanceView = false;
+      window.App.state.s.free = true;
+    }
   }
 
   resize(vp) {
@@ -104,18 +126,27 @@ export default class extends Transform {
     document.onmousedown = () => (this.mouse.down = true);
     document.onmouseup = () => (this.mouse.down = false);
     document.onmousemove = (e) => this.onMouseMove(e);
+    document.onkeyup = (e) => this.onKeyUp(e);
+  }
 
-    // # temp
-    // this.gl.camera.position.x = -30;
-    // this.gl.camera.position.y = 30;
+  onKeyUp(e) {
+    if (e.key === " ") {
+      this.toInstanceView(true);
+    }
   }
 
   onWheel(e) {
     if (!this.mvmt.canMove) return;
     this.mvmt.ez += e.deltaY * 0.02;
+
+    // reset instance view if zoom out
+    if (this.gl.camera.position.z > 3) {
+      if (this.a.isInstanceView) this.toInstanceView();
+    }
   }
 
   onMouseMove(e) {
+    if (!window.App.state.s.free) return;
     if (!this.mvmt.canMove) return;
     if (!this.mouse.down) return;
 
